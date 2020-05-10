@@ -1,0 +1,6 @@
+A shell script is written to load db.
+
+Inorder to run it use the command "python manage.py sync_database"
+
+Already given data is loaded into DB. When trying to reload the same, initially it clears all the data in Book table
+inorder to avoid duplication

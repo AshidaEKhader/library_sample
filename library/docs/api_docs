@@ -1,0 +1,201 @@
+P.S: Since nothing is implemented to authenticate a user, user_id is passed along with all the request.
+Then only we will be able to identify the permission associated with the user.
+In real application we will have a token mechanism and middleware authenticates the request and we get the user instance
+ from request.user
+
+NOTE: 'http://localhost:8000' as I run it on port 8000 and localhost, if it is running anywhere other than this, please
+use the port and url used for running it.
+
+ 1) An endpoint that allows the database searching by title and/or by author, returning books and
+their availability.
+
+URL - http://localhost:8000/api/books/list?author=paulo&title='hello'&user=8cb2c3d6-15e7-4675-8a66-a904b0e7b1dd
+METHOD : GET
+RESPONSE : {
+    "count": 25,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "id": "2767052",
+            "isbn": "439023483",
+            "title": "The Hunger Games",
+            "status": "available",
+
+            "authors": [
+                {
+                    "uid": "13550dcb-0a24-4dc4-a896-63cfb91d1771",
+                    "username": "Suzanne Collins"
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "isbn": "439554934",
+            "title": "Harry Potter and the Philosopher's Stone",
+            "status": "available",
+
+            "authors": [
+                {
+                    "uid": "19c7fb14-a4ec-4be0-9279-c3bb1f89d2e1",
+                    "username": "J.K. Rowling"
+                },
+                {
+                    "uid": "d635cfa1-ece4-4f11-8da6-3e75d19ffbe1",
+                    "username": " Mary GrandPré"
+                }
+            ]
+        },
+        {
+            "id": "2657",
+            "isbn": "61120081",
+            "title": "To Kill a Mockingbird",
+            "status": "available",
+
+            "authors": [
+                {
+                    "uid": "4eb1cfe2-9264-456b-ab97-e77c1e5e1a32",
+                    "username": "Harper Lee"
+                }
+            ]
+        },
+        {
+            "id": "4671",
+            "isbn": "743273567",
+            "title": "The Great Gatsby",
+            "status": "available",
+            "authors": [
+                {
+                    "uid": "4dbbc976-e564-406b-b292-cb483228de30",
+                    "username": "F. Scott Fitzgerald"
+                }
+            ]
+        },
+        {
+            "id": "11870085",
+            "isbn": "525478817",
+            "title": "The Fault in Our Stars",
+            "status": "available",
+            "authors": [
+                {
+                    "uid": "494e631a-f486-4f7d-b72e-365ffc1543e3",
+                    "username": "John Green"
+                }
+            ]
+        },
+        {
+            "id": "5907",
+            "isbn": "618260307",
+            "title": "The Hobbit or There and Back Again",
+            "status": "available",
+            "authors": [
+                {
+                    "uid": "fbb4f166-027f-4951-a572-c8a8e35d47f4",
+                    "username": "J.R.R. Tolkien"
+                }
+            ]
+        },
+        {
+            "id": "5107",
+            "isbn": "316769177",
+            "title": "The Catcher in the Rye",
+            "status": "available",
+            "authors": [
+                {
+                    "uid": "6e81cb63-3ea7-44dd-a298-4328d2a00a91",
+                    "username": "J.D. Salinger"
+                }
+            ]
+        },
+        {
+            "id": "960",
+            "isbn": "1416524797",
+            "title": "Angels & Demons ",
+            "status": "available",
+
+            "authors": [
+                {
+                    "uid": "4d4746fe-c93a-4e1b-9ab8-60341248edbd",
+                    "username": "Dan Brown"
+                }
+            ]
+        },
+        {
+            "id": "1885",
+            "isbn": "679783261",
+            "title": "Pride and Prejudice",
+            "status": "available",
+            "authors": [
+                {
+                    "uid": "4c52923e-494a-452b-b6ea-e34aa76f7cbf",
+                    "username": "Jane Austen"
+                }
+            ]
+        },
+        {
+            "id": "7613",
+            "isbn": "452284244",
+            "title": "Animal Farm: A Fairy Story",
+            "status": "available",
+            "authors": [
+                {
+                    "uid": "a327b419-fe89-4e20-a58b-13fb77febfb4",
+                    "username": "George Orwell"
+                }
+            ]
+}
+
+STATUS : 200
+
+2) Add/remove unavailable books to/from a wishlist such that they are notified when they
+become available
+
+URL - http://localhost:8000/api/wishlist/update?user=8ee536fc-2504-4cdc-b12c-7b5cf8ce330d
+METHOD : PUT
+REQUEST BODY : {"uid": "8ee536fc-2504-4cdc-b12c-7b5cf8ce330d", "action": "remove", "wishlist": ["1234"]}
+# where uid is user uid
+#: action can be add or remove
+#: wishlist = list of book id's to be added or removed from wishlist
+RESPONSE: {
+    "message": "Wish list updated successfully."
+}
+STATUS : 200
+
+3)Change the rental status (available/borrowed) for a book (which should also trigger the email
+notifications to users with the book in their wishlist)
+
+URL : http://localhost:8000/api/book/update?user=3e296573-2b88-4fc5-a691-a0711ba6dae5
+METHOD: PUT
+REQUEST BODY : {"book_id": "581955", "status":"borrowed"}
+#: status can be "borrowed" or "available"
+OUTPUT: The mail for the users will be printed in the output screen
+RESPONSE: {
+    "message": "Book status updated successfully."
+}
+STATUS : 200
+
+4) Generate a report on the number of books being rented and how many days they’ve been
+rented for.
+
+URL : http://localhost:8000/api/book/report?user=3e296573-2b88-4fc5-a691-a0711ba6dae5&report_name=example
+METHOD: GET
+OUTPUT: The report file will be generated inside the project folder with the name for report_name inputted.
+A xlsx report will be generated
+RESPONSE: {
+    "message": "Report generated successfully."
+}
+STATUS : 200
+
+5)The frontend of the library website displays affiliate links to copies of the book available on
+Amazon for each book. The Amazon book IDs can be retrieved from the OpenLibrary API
+(no developer key required). An endpoint is required that will update the Amazon IDs stored
+in the database for all the books.
+
+URL : http://localhost:8000/api/amazon/update?user=3e296573-2b88-4fc5-a691-a0711ba6dae5
+METHOD: PUT
+REQUEST BODY : {}
+RESPONSE: {
+    "message": "Amazon ID of all books successfully updated."
+}
+STATUS : 200
+
