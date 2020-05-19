@@ -132,9 +132,9 @@ class BookAmazonUpdateSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         #: Get the status value
-        status = validated_data['amazon_id']
+        amazon_id = validated_data['amazon_id']
         #: Change the instance status
-        instance.amazon_id = status
+        instance.amazon_id = amazon_id
         instance.save()
         return instance
 
