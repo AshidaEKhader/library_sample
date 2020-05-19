@@ -5,8 +5,8 @@ from .views import BookListView, WishListUpdateView, BookStatusUpdateView, BookR
 urlpatterns = [
     #: API to search books using title and author
     path('books/list', BookListView.as_view(), name='book_list'),
-    path('wishlist/update', WishListUpdateView.as_view(), name='book_list'),
-    path('book/update', BookStatusUpdateView.as_view(), name='book_list'),
-    path('book/report', BookReportView.as_view(), name='book_list'),
-    path('amazon/update', BookAmazonUpdateView.as_view(), name='book_list'),
+    path('wishlist/update', WishListUpdateView.as_view(), name='wishlist_update'),
+    path('book/update', BookStatusUpdateView.as_view(), name='book_update'),
+    path('book/report', BookReportView.as_view(), name='report'),
+    path('amazon/update', BookAmazonUpdateView.as_view(), name='amazon_update'),
 ]
